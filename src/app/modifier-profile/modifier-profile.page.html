@@ -1,0 +1,82 @@
+<ion-header [translucent]="true" color="dark">
+  <ion-toolbar class="back-img" color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title ><h4>Modifier Profile</h4></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!--
+<div color="secondary" position="stacked" class="ion-text-center" >
+
+ <ion-label position="fixed" class="logo" color="dark"> Modifier Profil</ion-label>
+      </div>
+  -->
+
+  <form>
+
+    <ion-item lines="full">
+      <ion-label position="floating" class="labelion">Prénom</ion-label><br>
+      <ion-input type="text" required id="prenom" name="prenom"  [(ngModel)]="currentUtilisateur.prenom" ></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating" class="labelion">Nom</ion-label><br>
+      <ion-input type="text" id="nom" name="nom"   [(ngModel)]="currentUtilisateur.nom" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating" class="labelion">Email</ion-label><br>
+      <ion-input type="email" id="email" name="email"  required [(ngModel)]="currentUtilisateur.email"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating" class="labelion">Adresse</ion-label><br>
+      <ion-input type="text" id="adresse" required name="adresse" [(ngModel)]="currentUtilisateur.adresse"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating" class="labelion">Mot de passe</ion-label><br>
+      <ion-input type="password" id="motDePasse" name="motDePasse" required [(ngModel)]="currentUtilisateur.motDePasse" ></ion-input>
+    </ion-item>
+    <br><br>
+
+
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="success" expand="block" shape="round" (click)="modifierProfile()">Modifier</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+</ion-content>
+<ion-footer collapse="fade" >
+  <ion-toolbar>
+    <ion-tabs class="hideTab">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="acceuil()">
+          <ion-icon   name="home"></ion-icon>
+          <ion-label>Acceuil</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="paiement()">
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-label>Paiement</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="historique()">
+          <ion-icon   name="list-outline"></ion-icon>
+          <ion-label>Historique </ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="presentActionSheet()">
+          <ion-icon  name="person-circle-outline"></ion-icon>
+          <ion-label>A Propos</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+
+</ion-footer>

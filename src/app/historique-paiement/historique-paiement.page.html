@@ -1,0 +1,72 @@
+<ion-header color="dark" >
+  <ion-toolbar color="dark" >
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Liste des Paiements</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content ><!--
+<ion-item>
+  <ion-label position="floating">Mode de Paiement :</ion-label>
+  <ion-input  placeholder="saisir le mode" [(ngModel)]="mode" type="text" #txtmode></ion-input>
+</ion-item>-->
+<div >
+  <ion-card class="favCard"  button *ngFor="let p of listePaiement" >
+    <ion-card-content >
+      <h2><b>{{p.paiement.dateP|date:'dd/MM/YYYY  HH:mm'}}</b></h2><br>
+      <h2><b>Nom Client :</b> {{p.paiement.factures[0].client.nom}} {{p.paiement.factures[0].client.prenom}}</h2>
+      <h2><b>Montant Totale : </b> {{p.totalMontant}}  DT</h2>
+      <h2><b>Les Factures Payés :  </b> </h2>
+
+    <ion-card-content  >
+      <h2 *ngFor="let f of p.paiement.factures">Référence Facture: {{f.referenceFact}} </h2><br>
+    </ion-card-content>
+
+
+  </ion-card-content>
+    </ion-card>
+  </div>
+  <ion-item>
+    <p class="text" *ngIf="listePaiement.length === 0" >La liste est Vide</p>
+  </ion-item>
+<ion-footer>
+  <ion-toolbar>
+
+   <ion-button *ngIf="listePaiement.length !== 0" color="success" shape="round" (click)="openModal()" expand="full"><ion-icon  name="transfer"></ion-icon> Transférer Paiements</ion-button>
+
+
+   </ion-toolbar>
+
+</ion-footer>
+</ion-content>
+<ion-footer collapse="fade" >
+  <ion-toolbar>
+    <ion-tabs class="hideTab">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="acceuil()">
+          <ion-icon   name="home"></ion-icon>
+          <ion-label>Acceuil</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="paiement()">
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-label>Paiement</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="historique()">
+          <ion-icon   name="list-outline"></ion-icon>
+          <ion-label>Historique </ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="presentActionSheet()">
+          <ion-icon  name="person-circle-outline"></ion-icon>
+          <ion-label>A Propos</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+
+</ion-footer>

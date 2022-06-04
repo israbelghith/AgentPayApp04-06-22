@@ -1,0 +1,116 @@
+<ion-header   color="dark" >
+  <ion-toolbar color="dark" >
+    <ion-buttons  slot="start">
+      <ion-menu-button  ></ion-menu-button>
+    </ion-buttons>
+    <ion-title> <h4>Recouvrement Impayés </h4></ion-title>
+  </ion-toolbar>
+</ion-header>
+<!--
+
+<ion-content >
+
+<ion-card class="card">
+  <ion-card-header>
+    <ion-card-title> Bienvenu </ion-card-title>
+    <ion-item large class="card">
+      <ion-icon name="person-circle-outline" color="dark" style="zoom:1.5;" ></ion-icon>
+      <h5 color="dark">      {{currentUtilisateur.prenom}} {{currentUtilisateur.nom}}</h5>
+
+    </ion-item>
+
+
+</ion-card-header>
+</ion-card>
+
+  <ion-card  button [routerLink]="['/facture']" >
+
+    <ion-card-header>
+           <ion-card-title> Payer Factures <ion-img size="small" src="../../assets/icon/search.jpg"></ion-img> </ion-card-title>
+
+   </ion-card-header>
+  </ion-card>
+
+    <ion-card  button   [routerLink]="['/historique-paiement']">
+      <ion-card-header>
+             <ion-card-title> Liste des Paiements  <ion-img size="small" src="../../assets/icon/paiement.png"></ion-img> </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+
+  </ion-content>
+-->
+<ion-content>
+  <div class="main_content_div">
+    <div class="user_div">
+      <div class="first_div">
+         <ion-label class="welcome">Bienvenu</ion-label>
+         <ion-label class="username"> {{currentUtilisateur.email}}</ion-label>
+      </div>
+
+     </div>
+
+    <div class="content_div " >
+      <ion-label class="hello_lbl">Action: </ion-label>
+      <ion-grid fixed >
+        <ion-row>
+          <ion-col size="6"  >
+            <div class="col_div"  (click)="paiement()" >
+              <img src="../../assets/icon/search.jpg" >
+              <ion-label>Payer Factures</ion-label>
+            </div>
+          </ion-col>
+
+          <ion-col size="6"  >
+            <div class="col_div" >
+              <img src="../../assets/icon/user7.jpg"  (click)="historique()">
+              <ion-label>Historique Paiements </ion-label>
+            </div>
+          </ion-col>
+          <ion-col   >
+            <div class="col_div_profile" >
+              <img src="../../assets/icon/user5.jpeg"  style="height:80px" (click)="modifierProfile()" class="img_profile">
+              <ion-label>Modifier Profile </ion-label>
+            </div>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+    </div>
+  </div>
+
+  </ion-content>
+<ion-footer collapse="fade" >
+  <ion-toolbar>
+    <ion-tabs class="hideTab">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="acceuil()">
+          <ion-icon   name="home"></ion-icon>
+          <ion-label>Acceuil</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="paiement()">
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-label>Paiement</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="historique()">
+          <ion-icon   name="list-outline"></ion-icon>
+          <ion-label>Historique </ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="presentActionSheet()">
+          <ion-icon  name="person-circle-outline"></ion-icon>
+          <ion-label>A Propos</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+
+</ion-footer>
+
+
+
+
+

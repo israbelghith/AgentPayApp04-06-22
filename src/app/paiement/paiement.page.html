@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar >
+    <ion-buttons slot="start" (click)="closeModal()">
+      <ion-back-button></ion-back-button>
+   <p color="primary">Back</p>
+    </ion-buttons>
+    <ion-title>Paiement des Factures</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+      <ion-item>
+
+          <ion-label position="floating">Mode de Paiement :</ion-label>
+          <ion-input  placeholder="saisir le mode" [(ngModel)]="mode" type="text" #txtmode></ion-input>
+
+      </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+
+    </ion-row>
+  </ion-grid>
+
+    <ion-toolbar>
+     <ion-button (click)="ajouterPaiement()">
+       <ion-icon slot="icon-only" name="add"></ion-icon>
+       Ajouter
+     </ion-button>
+     </ion-toolbar>
+
+</ion-content>
+
+<ion-footer collapse="fade" >
+  <ion-toolbar>
+    <ion-tabs class="hideTab">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="acceuil()">
+          <ion-icon   name="home"></ion-icon>
+          <ion-label>Acceuil</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="paiement()">
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-label>Paiement</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="historique()">
+          <ion-icon   name="list-outline"></ion-icon>
+          <ion-label>Historique </ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="presentActionSheet()">
+          <ion-icon  name="person-circle-outline"></ion-icon>
+          <ion-label>A Propos</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+
+</ion-footer>

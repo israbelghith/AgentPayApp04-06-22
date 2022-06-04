@@ -1,0 +1,88 @@
+<ion-header color="dark" >
+  <ion-toolbar color="dark" >
+
+    <ion-title>facture</ion-title> <!--<ion-icon (click)="reloadPage()" name="refresh">Refresh</ion-icon>-->
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content >
+
+  <ion-item>
+    <ion-label>Chercher Facture par : </ion-label>
+    <ion-select value="choisissez un référence" okText="Ok" cancelText="Non"  [(ngModel)]="selectedReference" >
+      <ion-select-option *ngFor="let u of listeReference" value="{{u.value}}">{{u.label}}</ion-select-option>
+    </ion-select>
+
+  </ion-item><br>
+  <ion-item>
+    <ion-label stacked>Valeur : </ion-label>
+  <ion-input type="number" [(ngModel)]="reference" text-right id="input"></ion-input>
+</ion-item>
+<br>
+  <ion-button  shape="round"  expand="full" (click)="chercherfacture()">
+    <ion-icon slot="icon-only" name="search" ></ion-icon> Chercher
+  </ion-button>
+<!--
+    <ion-button   (click)="addData()">
+      <ion-icon slot="icon-only" name="add"></ion-icon> Récupérer les Factures
+    </ion-button>
+-->
+
+<ion-list>
+ <ion-list>
+   <ion-item>
+  <h4 class="text" *ngIf="listData" >La Liste des Factures :</h4>
+  <h4 class="textError" *ngIf="!listData" >La Liste est vide ! </h4>
+</ion-item>
+   <ion-item-sliding *ngFor="let facture of listData; let  i = index;" >
+
+<ion-card>
+      <ion-card-header>
+        <ion-checkbox [(ngModel)]="facture.isselected" ></ion-checkbox>
+
+      </ion-card-header>
+      <ion-card-content>
+        <h1>Adresse : {{facture.client.adresse}}</h1>
+<h2> Nom de Client: {{facture.client.nom}} {{facture.client.prenom}}</h2>
+        <h2>Référence Facture: {{facture.referenceFact}}</h2>
+
+        <h2>Montant: {{facture.montant}} DT</h2>
+      </ion-card-content>
+
+      </ion-card>
+   </ion-item-sliding>
+ </ion-list>
+
+</ion-list>
+<ion-button *ngIf="listData" color="success" shape="round"  expand="full" (click)="ajouterPaiement()"> Payer</ion-button>
+</ion-content>
+<ion-footer collapse="fade" >
+  <ion-toolbar>
+    <ion-tabs class="hideTab">
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="acceuil()">
+          <ion-icon   name="home"></ion-icon>
+          <ion-label>Acceuil</ion-label>
+          <ion-badge>6</ion-badge>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="paiements()">
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-label>Paiement</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="historique()">
+          <ion-icon   name="list-outline"></ion-icon>
+          <ion-label>Historique </ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button (click)="presentActionSheet()">
+          <ion-icon  name="person-circle-outline"></ion-icon>
+          <ion-label>A Propos</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-toolbar>
+
+</ion-footer>

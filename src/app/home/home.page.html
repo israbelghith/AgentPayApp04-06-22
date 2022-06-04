@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+
+    <ion-title  size="small">Recouvrement des Impayés</ion-title>
+
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+
+  <ion-card  button [routerLink]="['/facture']" >
+    <ion-card-header>
+           <ion-card-title> Chercher Factures <ion-img size="small" src="../../assets/icon/search.jpg"></ion-img> </ion-card-title>
+
+   </ion-card-header>
+  </ion-card>
+
+    <ion-card size="small" button   [routerLink]="['/historique-paiement']">
+      <ion-card-header>
+             <ion-card-title> Liste des Paiements  <ion-img size="small" src="../../assets/icon/paiement.png"></ion-img> </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+
+</ion-content>
