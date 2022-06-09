@@ -15,7 +15,7 @@ const httpOptions = {
 })
 export class UtilisateurService {
 
-  apiURL='http://localhost:8080/caisses/agent';
+  apiURL='http://192.168.1.123:8080/caisses/agent';
 
   constructor(private http: HttpClient, private authService: AuthentificationService) { }
 

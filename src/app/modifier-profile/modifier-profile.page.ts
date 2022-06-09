@@ -27,11 +27,7 @@ export class ModifierProfilePage implements OnInit {
     ) { }
 
   async ngOnInit() {
-    /*this.utilisateurService.chercherParEmail(this.authService.loggedUser).
-    subscribe( cais =>{ this.currentUtilisateur = cais;
-    console.log(this.currentUtilisateur);
-    console.log(this.authService.loggedUser);
-    } ) ;*/
+
    this.currentUtilisateur =await this.dataService.getAgent();
 
    console.log('logged user',this.dataService.getAgent());
@@ -46,6 +42,10 @@ this.authService.loadToken();
       );
 
   }
+
+
+
+
   paiement(){
     this.router.navigateByUrl('/facture');
   }
@@ -54,9 +54,7 @@ this.authService.loadToken();
   }
 
   acceuil(){
-    this.router.navigateByUrl('/folder/:id');
-
-
+    this.router.navigateByUrl('/PageAccueil');
   }
 
   async presentActionSheet() {
@@ -77,9 +75,11 @@ this.authService.loadToken();
         text: 'Deconnexion',
         icon: 'log-out-outline',
         data: 5,
-        handler: () => {
+        handler: async () => {
           this.authService.logout();
-          this.paiementService.deleteAll();
+          await this.paiementService.deleteAgent();
+          await this.paiementService.deleteFacture();
+          await this.paiementService.deletePaiement();
           this.router.navigateByUrl('/authentification');
         },
 

@@ -8,14 +8,11 @@ import { AuthentificationService } from './authentification.service';
   providedIn: 'root'
 })
 export class AgentService {
-  apiURL= 'http://localhost:8080/caisses/agent';
+  apiURL= 'http://192.168.1.123:8080/caisses/agent';
 
-  constructor(private http: HttpClient, private authService: AuthentificationService) { }
-
+  constructor(private http: HttpClient) { }
 
   modifierAgent(agent: Agent): Observable<Agent> {
-
-
     return this.http.put<Agent>(this.apiURL + '/modifierAgent', agent
     );
   }

@@ -15,18 +15,18 @@ import { UtilisateurService } from '../services/utilisateur.service';
 })
 export class VerifAuthentificationPage implements OnInit {
   utilisateur = new Utilisateur();
-  u = new Agent();
+  u: any;//new Agent();
+  agentTest: any;
   constructor(
     private modalController: ModalController,
-    private router: Router,
     private authentifierService: AuthentificationService,
     private utilisateurService: UtilisateurService,
     private dataService: DataService,
-    private paiementService: PaiementService,
     private authService: AuthentificationService
   ) {}
 
   ngOnInit() {}
+
   async closeModal() {
     const onClosedData = 'not ok';
     console.log('sending', onClosedData);
@@ -36,7 +36,6 @@ export class VerifAuthentificationPage implements OnInit {
   async connection() {
 
     this.authentifierService.connection(this.utilisateur).subscribe((data) => {
-      this.paiementService.deleteAll();
       this.authService.logoutVerif();
       const jwToken = data.headers.get('Authorization');
       this.authentifierService.saveToken(jwToken);
@@ -44,20 +43,17 @@ export class VerifAuthentificationPage implements OnInit {
         .chercherParEmail(this.utilisateur.email)
         .subscribe(async (agt) => {
           this.u = agt;
-          this.dataService.addAgent(agt);
           this.authentifierService.saveSecteur(agt.secteur);
-          console.log(agt.secteur);
-          if (this.u.role.role === 'agent') {
+          this.agentTest=await this.dataService.getAgent();
+
+          if (this.u.idU === this.agentTest.idU ) {
             await this.modalController.dismiss('ok');
-          } else {
+          }
+          else {
             this.closeModal();
           }
-          console.log(this.u.role);
         });
     });
   }
 
-  async ajouterPaiement() {
-    await this.modalController.dismiss('ok');
-  }
 }

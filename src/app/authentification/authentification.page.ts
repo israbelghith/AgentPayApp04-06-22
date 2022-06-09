@@ -17,65 +17,48 @@ import { Agent } from '../model/agent.model';
 })
 export class AuthentificationPage implements OnInit {
   utilisateur = new Utilisateur();
-  u=new Agent();
-  err= 0;
+  u = new Agent();
   display = false;
-  r=new Role(1,'admin');
-
   ionicForm: FormGroup;
-  clickAlert(){
-    this.display = false;
- }
 
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private authentifierService: AuthentificationService,
     private utilisateurService: UtilisateurService,
     private dataService: DataService,
-    private formBuilder: FormBuilder)
-     {
-
-      }
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-
     this.ionicForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      motDePasse: ['', [Validators.required, Validators.minLength(3)]]
+      motDePasse: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
-  get errorControl()
-  {
-  return this.ionicForm.controls;}
+  get errorControl() {
+    return this.ionicForm.controls;
+  }
 
-  connection()
-{console.log(this.ionicForm.value);
-    this.authentifierService.connection(this.utilisateur).subscribe((data)=> {
-    const jwToken = data.headers.get('Authorization');
-    this.authentifierService.saveToken(jwToken);
-    this.utilisateurService.chercherParEmail(this.utilisateur.email).
-    subscribe( agt =>{ this.u = agt;
+  connection() {
+    console.log(this.ionicForm.value);
+    this.authentifierService.connection(this.utilisateur).subscribe((data) => {
+      const jwToken = data.headers.get('Authorization');
+      this.authentifierService.saveToken(jwToken);
+      this.utilisateurService
+        .chercherParEmail(this.utilisateur.email)
+        .subscribe((agt) => {
+          this.u = agt;
+          this.dataService.addAgent(agt);
+          this.authentifierService.saveSecteur(agt.secteur);
 
-    this.dataService.addAgent(agt);
-    console.log(this.dataService.getAgent());
-this.authentifierService.saveSecteur(agt.secteur);
-console.log(agt);
-    if(this.u.role.role==='agent'){
-      this.router.navigate(['/folder/:id']);///folder/:id
-      console.log(this.dataService.getAgent());
-    }
-
-  else{
-      this.router.navigate(['/authentification']);
-      }
-  console.log(this.u.role);
-  }) ;
-
-
-});
-
-}
-
-
+          if (this.u.role.role === 'agent') {
+            this.router.navigate(['/PageAccueil']);
+          } else {
+            this.router.navigate(['/authentification']);
+          }
+        });
+    });
+  }
 }

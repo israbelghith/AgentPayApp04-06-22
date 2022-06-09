@@ -1,7 +1,7 @@
 <ion-header color="dark" >
   <ion-toolbar color="dark" >
 
-    <ion-title>facture</ion-title> <!--<ion-icon (click)="reloadPage()" name="refresh">Refresh</ion-icon>-->
+    <ion-title>facture</ion-title>
   </ion-toolbar>
 
 </ion-header>
@@ -23,11 +23,6 @@
   <ion-button  shape="round"  expand="full" (click)="chercherfacture()">
     <ion-icon slot="icon-only" name="search" ></ion-icon> Chercher
   </ion-button>
-<!--
-    <ion-button   (click)="addData()">
-      <ion-icon slot="icon-only" name="add"></ion-icon> Récupérer les Factures
-    </ion-button>
--->
 
 <ion-list>
  <ion-list>
@@ -43,7 +38,7 @@
 
       </ion-card-header>
       <ion-card-content>
-        <h1>Adresse : {{facture.client.adresse}}</h1>
+        <h2>Adresse : {{facture.client.adresse}}</h2>
 <h2> Nom de Client: {{facture.client.nom}} {{facture.client.prenom}}</h2>
         <h2>Référence Facture: {{facture.referenceFact}}</h2>
 

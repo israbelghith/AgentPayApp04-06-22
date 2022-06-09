@@ -9,95 +9,80 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaiementService {
-  apiURL?: string = 'http://localhost:8080/caisses/paiementAvecFacture';
+  apiURL?: string = 'http://192.168.1.123:8080/caisses/paiementAvecFacture';
   list: any;
 
-  constructor( private storage: Storage,  private http: HttpClient) {
+  constructor(private storage: Storage, private http: HttpClient) {
     this.init();
   }
 
   payerFactures(paiements: any[]): Observable<Paiement> {
     return this.http.post<Paiement>(
-      this.apiURL + '/ajouterPaiement', paiements, httpOptions
+      this.apiURL + '/ajouterPaiement',
+      paiements,
+      httpOptions
     );
   }
-  modifierFactures(factures: Facture[] ): Observable<Facture[]> {
-    return this.http.put<Facture[]>(this.apiURL + '/payer',factures, httpOptions);
+  modifierFactures(factures: Facture[]): Observable<Facture[]> {
+    return this.http.put<Facture[]>(
+      this.apiURL + '/payer',
+      factures,
+      httpOptions
+    );
   }
 
-//fct create paiement
-async init(){
-  await this.storage.create();
-}
-//agregarConKey
-async addDataKey(key: string, value: string)//add data to storage
-{
-await this.storage.set(key, value);
-}
-//agregar
-async addPaiement(value: any)
-{
-  // eslint-disable-next-line prefer-const
-  let id = await this.storage.length() + 1;
-  await this.storage.set(id.toString(), value);
-}//attention le const est annulé en haut de la page
-
-//rescatar
-async rescue()
-{
-  return await this.storage.get('myFactureListe');
-}
-
-lister(){
-  // eslint-disable-next-line prefer-const
-  let listPaiement= [];
-  this.storage.forEach((v,k) => {
-    if(k!== 'myFactureListe' && k!== 'agent' &&k!=='jwt')
-    {
-      listPaiement.push(v);
-    }
-   });
-  return listPaiement;
-}
-/*
-  async delete(fact: Facture)
-{
-  const storedData= await this.storage.get('myFactureListe') || [];
-  this.storage.forEach((v,k) => {
-    if(k === 'myFactureListe')
-    {
-        for(let i=0; i<v.lenght; i++)
-        {
-          if(v[i]=== fact)
-              {
-                console.log('la facture avant la suppression',i);
-                storedData.splice(i,1);
-              }
-        }
-    }
-   });
- // this.storage.remove(key);
-}*/
-async deleteAll()
-{
- // const storedData= await this.storage.get('myFactureListe') || [];
-  this.storage.forEach((v,k) => {
-if(k=== 'myFactureListe' || k==='agent')
-{
-    this.storage.remove(k);
+  //fct create paiement
+  async init() {
+    await this.storage.create();
   }
-   });
+
+  //agregar
+  async addPaiement(value: any) {
+    // eslint-disable-next-line prefer-const
+    let id = (await this.storage.length()) + 1;
+    await this.storage.set(id.toString(), value);
+  }
+
+
+  lister() {
+    // eslint-disable-next-line prefer-const
+    let listPaiement = [];
+    this.storage.forEach((v, k) => {
+      if (k !== 'ListeDesFactures' && k !== 'agent') {
+        listPaiement.push(v);
+      }
+    });
+    return listPaiement;
+  }
+
+  async deleteAll() {
+    this.storage.forEach((v, k) => {
+      this.storage.remove(k);
+    });
+  }
+async deleteAgent()
+{
+  this.storage.forEach((v, k) => {
+    if (k === 'agent') {
+      this.storage.remove(k);
+    }
+  });
 }
-async deletePaiement(){
-  this.storage.forEach((v,k) => {
-    if(k!== 'myFactureListe' && k!=='agent')
-    {
+ async deleteFacture() {
+    this.storage.forEach((v, k) => {
+      if (k === 'ListeDesFactures') {
         this.storage.remove(k);
       }
-       });
-}
-
+    });
+  }
+  async deletePaiement() {
+    this.storage.forEach((v, k) => {
+      if (k !== 'ListeDesFactures' && k !== 'agent') {
+        this.storage.remove(k);
+      }
+    });
+  }
 }

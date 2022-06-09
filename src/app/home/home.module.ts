@@ -1,22 +1,19 @@
-import { HistoriquePaiementPageModule } from './../historique-paiement/historique-paiement.module';
-import { FacturePageModule } from './../facture/facture.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { HomePage } from './home.page';
+
+import { IonicModule } from '@ionic/angular';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
+import { HomePage } from './home.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule,
-    FacturePageModule,
-    HistoriquePaiementPageModule
+    HomePageRoutingModule
   ],
   declarations: [HomePage]
 })

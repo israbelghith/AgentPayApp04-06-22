@@ -5,15 +5,13 @@
 import { PaiementService } from './../services/paiement.service';
 import { DataService } from './../services/data.service';
 import { Component, OnInit } from '@angular/core';
-import { Facture } from '../model/facture.model';
-import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
-import { PaiementPage } from '../paiement/paiement.page';
+
+import { ActionSheetController, AlertController } from '@ionic/angular';
+
 import { FactureService } from '../services/facture.service';
 import { Router } from '@angular/router';
 import { AuthentificationService } from '../services/authentification.service';
 import { Paiement } from '../model/paiement.model';
-import { UtilisateurService } from '../services/utilisateur.service';
-
 
 @Component({
   selector: 'app-facture',
@@ -21,28 +19,20 @@ import { UtilisateurService } from '../services/utilisateur.service';
   styleUrls: ['./facture.page.scss'],
 })
 export class FacturePage implements OnInit {
-  listData: any ;
-  list = [];
+  listData: any;
   reference: number;
   factlist = [];
-  // indexList: any [];
-  secteur: string;
-  dataReturned: any;
   listeReference: any[];
   selectedReference;
-  factures = [];
-   agent: any;
-   paiement=new Paiement();
+  paiement = new Paiement();
+
   constructor(
     private dataService: DataService,
-    private modalController: ModalController,
     private paiementService: PaiementService,
     private factureService: FactureService,
     private router: Router,
-    private authentificationService: AuthentificationService,
     private alertController: AlertController,
     public authService: AuthentificationService,
-    private utilisateurService: UtilisateurService,
     public actionSheetController: ActionSheetController
   ) {
     this.listeReference = [
@@ -53,193 +43,129 @@ export class FacturePage implements OnInit {
   }
 
   ngOnInit() {
-    this.chercher();
-
-
+    this.chercherFacture();
   }
-  async chercher() {
-    this.listData = await this.dataService.getData();
-let list3=[];
-    if(this.listData===null)
-    {
+  async chercherFacture() {
+    this.listData = await this.dataService.getListeFacture();
+    let list = [];
+    if (this.listData === null) {
       this.addData();
-    }
-    else{
-      for(let i of this.listData)
-      {
-        if(i.etat=== 'impayé')
-        {
-list3.push(i);
+    } else {
+      for (let i of this.listData) {
+        if (i.etat === 'impayé') {
+          list.push(i);
         }
       }
-      this.listData=list3;
+      this.listData = list;
     }
-     //paiementService.rescue('myFactureListe');
-
-
-
   }
   async addData() {
-    const secteur = this.authentificationService.getSecteur();
-    await this.factureService.chercherParSecteur(this.dataService.getSecteur()).subscribe(async (arg) => {
-      this.list = arg;
-      console.log(arg);
-      for (let i=0; i<arg.length;i++) {
-       this.listData= await this.dataService.addData(arg[i]);
-        console.log('la liste :' + arg[i]);
-        this.listData = await this.dataService.getData();
-      }
-      window.location.reload();
-     // this.listData = await this.dataService.getData();
-    });
-  //  window.location.reload();
+    await this.factureService
+      .chercherParSecteur(this.dataService.getSecteur())
+      .subscribe(async (arg) => {
+        console.log(arg);
+        for (let i = 0; i < arg.length; i++) {
+          await this.dataService.addData(arg[i]);
+        }
+        this.listData = await this.dataService.getListeFacture();
+        window.location.reload();
+      });
   }
 
-reloadPage()
-{
-  window.location.reload();
-}
-
-doRefresh(event) {
-  console.log('Begin async operation');
-
-  setTimeout(() => {
-    console.log('Async operation has ended');
-    event.target.complete();
-  }, 2000);
-}
+  reloadPage() {
+    window.location.reload();
+  }
 
   async ajouterPaiement() {
     this.factlist = this.listData.filter((x) => x.isselected === true);
-    let mt=0;
-      for(let i=0; i< this.factlist.length; i++)
-      {
-          mt=mt+ this.factlist[i].montant;
-          console.log(i, this.factlist[i].montant);
-      }
-////da
-  ///  Paiement=new Paiement('espèce',new Date(),'espèce','payé',this.dataService.getAgent(),this.factlist);
-this.paiement.modePaiement='espèce';
-this.paiement.factures=this.factlist;
-this.paiement.dateP=new Date();
-this.paiement.agent= await this.dataService.getAgent();
-console.log('agent :',this.dataService.getAgent());
-////
-    const dataTab =
-        {
-          paiement:this.paiement,
-          totalMontant: mt
-        };
-
-      await this.paiementService.addPaiement(dataTab);
-      this.modifierFacture();
-
-      const alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Paiement Effectué',
-        subHeader: '',
-        message:
-          'votre ordre de paiement est effectuée avec succès  <image src="../../assets/icon/success.jpeg"></image></ion-icon> ',
-      //  buttons: ['OK'],//this.router.navigate(['/facture'])
-      });
-
-      this.router.navigate(['/historique-paiement']).then(()=>{
-        //window.location.reload();
-      });
-    //  await alert.present();
+    let mt = 0;
+    for (let i = 0; i < this.factlist.length; i++) {
+      mt = mt + this.factlist[i].montant;
+      console.log(i, this.factlist[i].montant);
     }
-//this.closeModal();
 
+    this.paiement.modePaiement = 'espèce';
+    this.paiement.factures = this.factlist;
+    this.paiement.dateP = new Date();
+    this.paiement.agent = await this.dataService.getAgent();
 
+    const paiementData = {
+      paiement: this.paiement,
+      totalMontant: mt,
+    };
 
- /* async openModal() {
-    this.factlist = this.listData.filter((x) => x.isselected === true);
-
-    let indexList = this.factlist.findIndex((x) => x.referenceFact);
-    // let index = a.findIndex(x => x.LastName === "Skeet");
-    console.log(this.factlist);
-    console.log(indexList);
-    const modal = await this.modalController.create({
-      component: PaiementPage,
-      componentProps: {
-        //      totalMt: this.mts,
-        paramTitle: this.factlist,
-        indexList: this.listData,
-      },
+    await this.paiementService.addPaiement(paiementData);
+    this.modifierEtatFacture();
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Paiement Effectué',
+      subHeader: '',
+      message:
+        'votre ordre de paiement est effectuée avec succès  <image src="../../assets/icon/success.jpeg"></image></ion-icon> ',
     });
-
-    modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned.data === 'ok') {
-        console.log(dataReturned.data);
-        this.modifierFacture();
-      }
+    alert.present();
+    this.router.navigate(['/historique-paiement']).then(() => {
+      window.location.reload();
     });
+  }
 
-    return await modal.present();
-  }*/
-
-  async modifierFacture() {
+  async modifierEtatFacture() {
     for (let i = 0; i < this.listData.length; i++) {
-      //  let indexList = this.listData.findIndex((x) => x === this.factlist[i]);
-      //await this.dataService.removeData(i);
       for (let j = 0; j < this.factlist.length; j++) {
         if (this.listData[i] === this.factlist[j]) {
           this.listData[i].etat = 'payé';
         }
       }
     }
-    await this.dataService.setData(this.listData);
-  /*  this.router.navigate(['/facture']).then(()=>{
-      window.location.reload();
-    });*/
-
+    await this.dataService.updateFactures(this.listData);
   }
 
   async chercherfacture() {
-    console.log('le référence selectionné', this.selectedReference);
-    console.log(this.reference);
     const listchercher = [];
-    const list= await this.dataService.getData();
+    const list = await this.dataService.getListeFacture();
     if (this.selectedReference === '1') {
       for (let i = 0; i < list.length; i++) {
-
-        if (list[i].referenceFact === this.reference && list[i].etat!== 'payé') {
+        if (
+          list[i].referenceFact === this.reference &&
+          list[i].etat !== 'payé'
+        ) {
           listchercher.push(list[i]);
         }
       }
     } else if (this.selectedReference === '2') {
       for (let i = 0; i < list.length; i++) {
-
-        if (list[i].client.referenceClient === this.reference && list[i].etat!== 'payé') {
+        if (
+          list[i].client.referenceClient === this.reference &&
+          list[i].etat !== 'payé'
+        ) {
           listchercher.push(list[i]);
         }
       }
     } else if (this.selectedReference === '3') {
       for (let i = 0; i < list.length; i++) {
-
-        if (list[i].contrat.referenceContrat === this.reference && list[i].etat!== 'payé') {
+        if (
+          list[i].contrat.referenceContrat === this.reference &&
+          list[i].etat !== 'payé'
+        ) {
           listchercher.push(list[i]);
         }
       }
     }
-    console.log('la liste: ', listchercher);
     this.listData = listchercher;
   }
 
-  paiements(){
+  paiements() {
     this.router.navigateByUrl('/facture');
   }
-  historique(){
+  historique() {
     this.router.navigateByUrl('/historique-paiement');
   }
 
-  acceuil(){
-    this.router.navigateByUrl('/folder/:id');
-
+  acceuil() {
+    this.router.navigateByUrl('/PageAccueil'); // folder/:id
   }
-  modifierProfile(){
+  modifierProfile() {
     this.router.navigateByUrl('/modifier-profile');
-
   }
 
   async presentActionSheet() {
@@ -254,33 +180,34 @@ console.log('agent :',this.dataService.getAgent());
           data: 5,
           handler: () => {
             this.router.navigateByUrl('/modifier-profile');
-          }
+          },
         },
         {
-        text: 'Deconnexion',
-        icon: 'log-out-outline',
-        data: 5,
-        handler: () => {
-          this.authService.logout();
-          this.paiementService.deleteAll();
-          this.router.navigateByUrl('/authentification');
+          text: 'Deconnexion',
+          icon: 'log-out-outline',
+          data: 5,
+          handler: async () => {
+            this.authService.logout();
+            await this.paiementService.deleteAgent();
+            await this.paiementService.deleteFacture();
+            await this.paiementService.deletePaiement();
+            this.router.navigateByUrl('/authentification');
+          },
         },
 
-      },
-
-      {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }]
+        {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          },
+        },
+      ],
     });
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
     console.log('onDidDismiss resolved with role and data', role, data);
   }
-
 }

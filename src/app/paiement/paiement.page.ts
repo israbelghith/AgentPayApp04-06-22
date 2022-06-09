@@ -140,9 +140,11 @@ async presentActionSheet() {
       text: 'Deconnexion',
       icon: 'log-out-outline',
       data: 5,
-      handler: () => {
+      handler: async () => {
         this.authService.logout();
-        this.paiementService.deleteAll();
+        await this.paiementService.deleteAgent();
+        await this.paiementService.deleteFacture();
+        await this.paiementService.deletePaiement();
         this.router.navigateByUrl('/authentification');
       },
 
